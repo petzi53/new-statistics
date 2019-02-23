@@ -98,7 +98,7 @@ if (!require("janitor"))
 
 ### Description
 
-The folllowing table contains a set of ACT scores from a sample of college students. The ACT ist a standarized college-readiness exa taken by many U.S. students; scores can range fro 1 to 36.
+The following table contains a set of ACT scores from a sample of college students. The ACT is a standardized college-readiness exam taken by many U.S. students; scores can range fro 1 to 36.
 
 
 Student | ACT  | $(X~i~ - M)$ | $(X~i~ - M)^2$
@@ -117,7 +117,7 @@ Student | ACT  | $(X~i~ - M)$ | $(X~i~ - M)^2$
 Total | 
 
 a. **Location:** Calculate the mean (_M_), median, and mode for this sample.
-b. **Spread:** Calculate the standard deviation (_s_), range and interquartile range for this sample. For _s_, fill in the two columns on the right in the table above, then use the formular to calcualte _s_ yourself.
+b. **Spread:** Calculate the standard deviation (_s_), range and interquartile range for this sample. For _s_, fill in the two columns on the right in the table above, then use the formula to calculate _s_ yourself.
 
 
 ### Solution
@@ -166,13 +166,10 @@ ACT_df <- ACT_df %>%
     adorn_totals("row") # janitor package
 ACT_df[12, 3] <- "   " # summing up Xi-M does not make sense
 
-
-# here again comes finally the output of the table with a standard command
 knitr::kable(ACT_df, 
              booktabs = TRUE, 
              caption = "ACT Scores for Exercise 1 of Chapter 3",
-             align = 'rrrr',
-             escape = TRUE) # has to be added because of html in formated cells
+             align = 'rrrr')
 ```
 
-Note that the data have be sorted by ACT score to make it easier to identify the median (in bold) and IQR.
+This table has not the same information as in the book p.505. At first I tried to build it similar but this complicates everything as it is not suitable for using R.
