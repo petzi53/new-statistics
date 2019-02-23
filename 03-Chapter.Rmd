@@ -161,26 +161,11 @@ ACT_df <- ACT_df %>% mutate( # dplyr package; included in tidyverse
     `(Xi-M)^2` = round(`Xi-M`^2,2)
     )
 
-# ### now preparing the table with a similar design as in the book p.505
-# ### not sure if this complex procedure is necessary 
-# ### as the genuine R procedures are different than the manual table calculation
-
-## sort by ACT score
-ACT_df <- ACT_df[order(ACT_df$ACT), ]
 
 ACT_df <- ACT_df %>%
     adorn_totals("row") # janitor package
 ACT_df[12, 3] <- "   " # summing up Xi-M does not make sense
-ACT_df[6,2] <- "<strong>24</strong>" # makes median bold
-ACT_row1 <- c("Denominator", 11, "  ", 10)
-ACT_row2 <- c("<em>M</em>", 24.09, " ", " ")
-ACT_row3 <- c("<em>s</em>", "  ", " ", 21.29)
-ACT_row4 <- c("<em>s</em>", 24.09, " ", 4.61)
 
-ACT_df <- rbind(ACT_df, ACT_row1)
-ACT_df <- rbind(ACT_df, ACT_row2)
-ACT_df <- rbind(ACT_df, ACT_row3)
-ACT_df <- rbind(ACT_df, ACT_row4)
 
 # here again comes finally the output of the table with a standard command
 knitr::kable(ACT_df, 
