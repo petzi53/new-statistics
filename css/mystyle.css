@@ -1,0 +1,11 @@
+blockquote {
+    padding: 10px 20px;
+    margin: 0 0 20px;
+    font-size: 14px;
+    font-style: italic;
+    border-left: 5px solid #1F9DE5}
+
+.right {
+    float: right;
+    width: 25%;
+}
