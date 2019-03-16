@@ -3,28 +3,28 @@ title: "itns Chapter 03"
 author: "Peter Baumgartner"
 date: "`r Sys.Date()`"
 output:
-  pdf_document:
-    pandoc_args: --number-offset=0,0
-    toc: yes
-    toc_depth: '6'
-    latex_engine: xelatex
-  word_document:
-    toc: yes
-    toc_depth: '6'
   html_notebook:
     theme: cerulean
-    css: "css/mystyle.css"
+    css: "../css/mystyle.css"
     fig_caption: yes
     number_sections: yes
     pandoc_args: --number-offset=0,0
     toc: yes
     toc_depth: 6
+  word_document:
+    toc: yes
+    toc_depth: '6'
+  pdf_document:
+    pandoc_args: --number-offset=0,0
+    toc: yes
+    toc_depth: '6'
+    latex_engine: xelatex
   github_document:
     toc: yes
     toc_depth: 6
   html_document:
     theme: cerulean
-    css: "css/mystyle.css"
+    css: "../css/mystyle.css"
     fig_caption: yes
     keep_md: yes
     number_sections: yes
@@ -280,7 +280,7 @@ ggplot(college_survey1, aes(positive_affect)) +
 
 After executing the above command `ggplot2` gives us a notification and a warning message:
 
-![](img/ggplot2-positive_affect-message-min.png)
+![](../img/ggplot2-positive_affect-message-min.png)
 
 #### Addressing the notification
 
@@ -584,15 +584,15 @@ great job of representing the distribution. Both the mean (48.2) [49.39] and med
 
 In RStudio there are several options to import data files via  the menu available. I generally prefer .csv files using the option `From Text (readr)`. `readr` is a package included in `tidyverse`.
 
-![](img/import-dataset-menu-min.png)
+![](../img/import-dataset-menu-min.png)
 
 
-<p>![](img/import-dataset-window-min.png)</p>
+<p>![](../img/import-dataset-window-min.png)</p>
 
 In the import data window you can preview the first 50 data. The R program code is displayed in the bottom right section of the window, so that you can automate this step. This is not only time saving but also necessary for better reproducibility. As we already have loaded `readr` and do not want to display the dataset in RStudio automatically we only need the second line of the program code.
 
 ```{r load-college-survey-1}
-college1 <- read_csv("_Material/AllEOC_Exercises/College_Survey_1/College_Survey_1.csv")
+college1 <- read_csv("../_Material/AllEOC_Exercises/College_Survey_1/College_Survey_1.csv")
 ```
 
 After loading the dataset you will see in the console window the parameters `readr` has used to parse the column specification.  This all is done normally correctly, automatically, and hassle-free.
