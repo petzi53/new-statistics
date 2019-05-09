@@ -369,35 +369,3 @@ ggplot(df, aes(`Exact age`, value)) +
   theme(legend.position = c(.9,.8))
 
 ```
-
-```{r}
-p <- ggplot(life_table_2016_v4) +
-  geom_bar(aes(x=`Exact age`, y=MaleDeath), stat="identity", color = "blue", alpha = 0.8) + 
-  geom_bar(aes(x=`Exact age`, y=FemaleDeath), stat="identity", color = "red", alpha = 0.3) +
-  labs(x = "Age of death in years",
-       y = "Death per 100,000") +
-  scale_fill_discrete(labels=c("Male", "Female")) +
-  guides(fill=guide_legend(title="Test"))
-p
-```
-
-```{r}
-ggplot(df, aes(`Exact age`, value)) + 
-  geom_bar(stat="identity", aes(colour = Gender)) +
-  labs(x = "Age of death in years",
-       y = "Death per 100,000") +
-  scale_color_discrete(labels=c("Male", "Female")) +
-  theme(legend.position = c(.9,.8))
-
-```
-
-
-```{r}
-ggplot(df, aes(`Exact age`, value, fill=Gender)) + 
-  geom_bar(stat="identity") +
-  labs(x = "Age of death in years",
-       y = "Death per 100,000") +
-  scale_color_discrete(labels=c("Male", "Female")) +
-  theme(legend.position = c(.9,.8))
-
-```
