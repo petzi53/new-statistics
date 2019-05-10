@@ -33,13 +33,17 @@ output:
     toc: yes
     toc_depth: 6
 ---
-# Still missing
-## Loading and tidying data from Excel sheet
-## Display distribution (same as from web scraping)
-## Including only text passages? If not -> note
-## Check needed packages
 
-# Setup
+# Personal remark and setup
+
+In this chapter are most of the end-of-chapter exercises not calculation but reflections. I have almost always used the original text for questions and answers. To indicate these quotes are the text passages written in italics and marked with bar on the left margin.
+
+As there are only few R calculations in this chapter I have added an additional challenge: Drawing a distribution for age at time of death. Data are taken from a html table on the web. This results in three different exercises:
+
+1. Getting data via web scraping and cleaning the data frame
+2. Getting data via Excel file and cleaning the data frame
+3. Displaying the distribution with the program package `ggplot2`
+
 ## Global options
 
 ```{r label = "global-options", highlight=TRUE}
@@ -65,13 +69,6 @@ knitr::opts_chunk$set(
 
 ```{r installing-and-loading-R-packages}
 
-### accompanying R package: https://github.com/gitrman/itns
-if (!require("itns"))
-        {remotes::install_github("gitrman/itns", 
-                         build = TRUE, build_opts = c("--no-resave-data", "--no-manual"))
-        library("itns")}
-
-
 ### https://www.tidyverse.org/
 if (!require("tidyverse"))
         {install.packages("tidyverse", repos = 'http://cran.wu.ac.at/')
@@ -86,17 +83,6 @@ if (!require("tidyverse"))
 # dplyr:   data (frame) manipulation
 # stringr: string manipulation
 # forcats: working with categorial varialbes
-
-
-### to calculate mode:
-if (!require("modeest"))
-        {install.packages("modeest", repos = 'http://cran.wu.ac.at/')
-        library(modeest)}
-
-# I am going to use the `janitor` package for calculating table totals
-if (!require("janitor"))
-        {install.packages("janitor", repos = 'http://cran.wu.ac.at/')
-        library(janitor)}
 
 ```
 
@@ -240,9 +226,9 @@ having, say, 1–4 children and a small number of families having many children.
 
 >Also, if the mean and median differ by more than a small amount, most likely there is skew, with the mean being “pulled” in the direction of the longer tail.
 
-# Additional exercises
+# Additional challenge:
 
-Both graphs above are calculated from data. The first one from [data on wikipedia](https://en.wikipedia.org/wiki/Lists_of_deaths_by_year) using python, the second one used [data from a life table](https://www.ssa.gov/oact/STATS/table4c6_2013.html) of the US social secutiry administration.
+Both graphs above are calculated from data. The first one from [data on wikipedia](https://en.wikipedia.org/wiki/Lists_of_deaths_by_year) using python, the second one used [data from a life table](https://www.ssa.gov/oact/STATS/table4c6_2013.html) of the US social security administration.
 
 This opens up two questions for exercises:
 
@@ -308,7 +294,9 @@ Another simple way is to
 3. fire up Excel
 4. set the cursor of the first cell of an empty Excel sheet
 5. paste the content of the clipboard into the Excel sheet
-6. save the data as a .csv file
+6. save the data as a .csv file in your appropriate RStudio project folder
+
+**Note:** In order to save the data in the correct format you must use the (american) number format with ',' as grouping character and '.' as the decimal character.
 
 ## Tidy data
 
@@ -348,20 +336,78 @@ names(firstLine)[1] <- "MaleDeath"
 names(firstLine)[2] <- "FemaleDeath"
 
 life_table_2016_v3 <- rbind(firstLine, life_table_2016_v3)
-life_table_2016_v4 <- cbind(life_table_2016_v2, life_table_2016_v3)
-head(life_table_2016_v4)
-tail(life_table_2016_v4)
+lifetable_final <- cbind(life_table_2016_v2, life_table_2016_v3)
+
+# For easier access change variable name 'Exact age' to 'age'
+names(lifetable_final)[1] <- "age" 
 ```
 
 
 ### Tidy data from Excel sheet
 
+We need to inspect and tidy our .csv file. Follow the procedure below:
+
+1) Click in RStudio project folder the .csv file name and select "View File" from the drop down menu which appears under your cursor
+
+![**Screenshot 5:** Step 1 to tidy the Excel sheet: Click the .csv filename from RStudio in your project folder and select "View File" from the drop down menue](../img/Lifetable/Lifetable-1-min.png)
+<br /><br />
+
+2) Insert a new line (row) at the top of the file and add column names as I did. Save the file.
+
+![**Screenshot 6:** Step 2 to tidy the Excel sheet: Insert a new line (row) at the top of the file and add column names as in the screenshot](../img/Lifetable/Lifetable-2-min.png)
+<br /><br />
+
+3) Click another time of the now changed .csv file name in your RStudio project folder: The same drop down menu opens up as before. This time select "Import Dataset…"
+
+![**Screenshot 7:** Step 3 to tidy the Excel sheet: Click the filename in your RStudio project folder and choose "Import Dataset…" from the drow down menue which appears under your cursor.](../img/Lifetable/Lifetable-3-min.png)
+<br /><br />
+
+4) A overlay window to import text data appears. But the format of the data are not correct. The reason is that we have to change the delimiter from comma to semicolon.
+
+![**Screenshot 8:** Step 4 to tidy the Excel sheet: Change the delimiter parameter from comma to semicolon separated.](../img/Lifetable/Lifetable-4-min.png)
+<br /><br />
+
+5) Now you can see the table in the correct format. In the window in the right corner you can also see the R code which generated after you click the button "Import". You can use the next time this code as a template for the automatic import via R script.
+
+![**Screenshot 9:** Step 5 to tidy the Excel sheet: The table is now in the correct format and you can click "Import".](../img/Lifetable/Lifetable-5-min.png)
+<br /><br />
+
+6) You can now inspect the data in a new tab in your code window. In the console window you can also check for the applied source code and the generated messages. You will see how the package `readr` has the data parsed and estimated the column specification.
+
+![**Screenshot 9:** Step 6 to tidy the Excel sheet: Inspecting the data in a new tab in your RStudio code window](../img/Lifetable/Lifetable-6-min.png)
+<br /><br />
+
+
+```{r tidy-life-table-2}
+# load .csv file into variable
+lifetable <- read_delim("../04-chapter/lifetable.csv", ";", escape_double = FALSE, trim_ws = TRUE)
+
+# We only need column 1, 3 and 6
+lifetable_v2 <- lifetable[, c(1,3,6)]
+
+# We calculate the difference between rows
+lifetable_v3 <-
+  abs(tail(lifetable_v2[, -1], -1) - head(lifetable_v2[, -1], -1))
+names(lifetable_v3)[1] <- "MaleDeath"
+names(lifetable_v3)[2] <- "FemaleDeath"
+
+# To bind the two data frames we need the same number of rows
+firstLine <- data.frame(0,0)
+names(firstLine)[1] <- "MaleDeath"
+names(firstLine)[2] <- "FemaleDeath"
+
+lifetable_v3 <- rbind(firstLine, lifetable_v3)
+lifetable_final <- cbind(lifetable_v2, lifetable_v3)
+```
+
+
+
 ## Display distribution for age at time of death
 
-```{r}
-df <- reshape2::melt(life_table_2016_v4[,c(1,4,5)] ,  
-                     id.vars = 'Exact age', variable.name = 'Gender')
-ggplot(df, aes(`Exact age`, value)) + 
+```{r display-age-distribution}
+df <- reshape2::melt(lifetable_final[,c(1,4,5)] ,  
+                     id.vars = 'age', variable.name = 'Gender')
+ggplot(df, aes(age, value)) + 
   geom_line(aes(colour = Gender)) +
   labs(x = "Age of death in years",
        y = "Death per 100,000") +
