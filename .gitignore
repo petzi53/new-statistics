@@ -4,5 +4,7 @@
 .Ruserdata
 *.pdf
 *.nb.html
+*.html
+*.dcf
 install.Rmd
 _Material
